@@ -13,7 +13,7 @@ export default function EarnDetailPage() {
 
   const handleSubscribe = () => {
     simulateAction(() => {
-      addToast(`Berhasil bergabung ${program.name}! Earn mulai besok 🎉`, 'success')
+      addToast(`Berhasil bergabung ${program.name}! Earn mulai besok`, 'success')
     })
   }
 
@@ -57,7 +57,7 @@ export default function EarnDetailPage() {
       </div>
 
       {/* Fixed bottom CTA */}
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] bg-white border-t border-gray-100 px-4 py-3 z-30">
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] bg-white border-t border-gray-100 px-4 py-3 z-50">
         <Button variant="orange" fullWidth size="xl" onClick={handleSubscribe}>
           Mulai Earn Sekarang
         </Button>

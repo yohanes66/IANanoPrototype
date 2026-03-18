@@ -32,7 +32,11 @@ export default function GadaiDigitalPage() {
         </div>
 
         <div className="bg-purple-50 rounded-xl p-4 border border-purple-100 text-center">
-          <p className="text-3xl mb-2">🏗️</p>
+          <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </div>
           <p className="text-sm font-bold text-gray-900">Buat Pinjaman Baru</p>
           <p className="text-xs text-gray-500 mt-1">Fitur ini akan segera aktif</p>
           <Badge color="gray" size="md">Coming Soon</Badge>

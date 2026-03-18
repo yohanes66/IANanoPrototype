@@ -1,16 +1,18 @@
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useDesignVariant } from '../../context/DesignVariantContext'
 
 const NAV_ITEMS = [
-  { id: 'home', label: 'Home', path: '/', icon: HomeIcon },
-  { id: 'market', label: 'Market', path: '/market', icon: MarketIcon },
-  { id: 'grow', label: 'Grow', path: '/grow', icon: GrowIcon },
-  { id: 'portfolio', label: 'Portfolio', path: '/portfolio', icon: PortfolioIcon },
-  { id: 'wallet', label: 'Wallet', path: '/wallet', icon: WalletIcon },
+  { id: 'home',        label1: 'Home',        label2: 'Home',        path: '/',            icon: HomeIcon },
+  { id: 'market',      label1: 'Trade',        label2: 'Trade',       path: '/market',      icon: MarketIcon },
+  { id: 'grow',        label1: 'Grow',         label2: 'Grow',        path: '/grow',        icon: GrowIcon },
+  { id: 'inspiration', label1: 'Inspiration',  label2: 'Engage',      path: '/inspiration', icon: InspirationIcon },
+  { id: 'portfolio',   label1: 'Portfolio',    label2: 'Portfolio',   path: '/portfolio',   icon: PortfolioIcon },
 ]
 
 export default function BottomNav() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { variant } = useDesignVariant()
 
   const getActive = (path) => {
     if (path === '/') return location.pathname === '/'
@@ -23,12 +25,13 @@ export default function BottomNav() {
         {NAV_ITEMS.map(item => {
           const active = getActive(item.path)
           const Icon = item.icon
+          const label = variant === 'option2' ? item.label2 : item.label1
           return (
             <button
               key={item.id}
               onClick={() => navigate(item.path)}
               className="flex flex-col items-center justify-center gap-0.5 flex-1 h-full relative"
-              aria-label={item.label}
+              aria-label={label}
             >
               {/* Active indicator — top pill */}
               {active && (
@@ -36,7 +39,7 @@ export default function BottomNav() {
               )}
               <Icon active={active} />
               <span className={`text-[10px] font-semibold ${active ? 'text-brand' : 'text-gray-400'}`}>
-                {item.label}
+                {label}
               </span>
             </button>
           )
@@ -78,6 +81,15 @@ function GrowIcon({ active }) {
   )
 }
 
+function InspirationIcon({ active }) {
+  const c = active ? '#F7931A' : '#9CA3AF'
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/>
+    </svg>
+  )
+}
+
 function PortfolioIcon({ active }) {
   const c = active ? '#F7931A' : '#9CA3AF'
   return (
@@ -86,17 +98,6 @@ function PortfolioIcon({ active }) {
       <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
       <line x1="12" y1="12" x2="12" y2="16"/>
       <line x1="10" y1="14" x2="14" y2="14"/>
-    </svg>
-  )
-}
-
-function WalletIcon({ active }) {
-  const c = active ? '#F7931A' : '#9CA3AF'
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M20 12V8H6a2 2 0 0 1 0-4h14v4"/>
-      <path d="M4 6v12a2 2 0 0 0 2 2h14v-4"/>
-      <circle cx="17" cy="16" r="1" fill={c}/>
     </svg>
   )
 }

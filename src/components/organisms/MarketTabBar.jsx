@@ -1,20 +1,36 @@
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useDesignVariant } from '../../context/DesignVariantContext'
 
-const TABS = [
-  { id: 'watchlist', label: 'Watchlist', path: '/market', icon: StarIcon },
-  { id: 'crypto', label: 'Crypto', path: '/market/crypto', icon: null },
-  { id: 'us', label: 'US', path: '/market/us', icon: null },
-  { id: 'commodities', label: 'Komoditas', path: '/market/commodities', icon: null },
-  { id: 'hk', label: 'HK', path: '/market/hk', icon: null },
-  { id: 'cn', label: 'CN', path: '/market/cn', icon: null },
+const TABS_V1 = [
+  { id: 'overview',    label: 'Overview',    path: '/market',              icon: null },
+  { id: 'watchlist',   label: 'Watchlist',   path: '/market/watchlist',    icon: StarIcon },
+  { id: 'crypto',      label: 'Crypto',      path: '/market/crypto',       icon: null },
+  { id: 'us',          label: 'US',          path: '/market/us',           icon: null },
+  { id: 'hk',          label: 'HK',          path: '/market/hk',           icon: null },
+  { id: 'cn',          label: 'CN',          path: '/market/cn',           icon: null },
+  { id: 'commodities', label: 'Commodities', path: '/market/commodities',  icon: null },
+]
+
+const TABS_V2 = [
+  { id: 'overview',    label: 'Overview',    path: '/market',              icon: null },
+  { id: 'watchlist',   label: 'Watchlist',   path: '/market/watchlist',    icon: StarIcon },
+  { id: 'crypto',      label: 'Crypto',      path: '/market/crypto',       icon: null },
+  { id: 'web3',        label: 'Web3',        path: '/market/web3',         icon: null },
+  { id: 'us',          label: 'US',          path: '/market/us',           icon: null },
+  { id: 'hk',          label: 'HK',          path: '/market/hk',           icon: null },
+  { id: 'cn',          label: 'CN',          path: '/market/cn',           icon: null },
+  { id: 'commodities', label: 'Commodities', path: '/market/commodities',  icon: null },
+  { id: 'futures',     label: 'Futures',     path: '/market/futures',      icon: null },
 ]
 
 export default function MarketTabBar() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { variant } = useDesignVariant()
+  const TABS = variant === 'option2' ? TABS_V2 : TABS_V1
 
   const isActive = (tab) => {
-    if (tab.path === '/market') return location.pathname === '/market'
+    if (tab.path === '/market') return location.pathname === '/market' || location.pathname === '/market/'
     return location.pathname === tab.path
   }
 

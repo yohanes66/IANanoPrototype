@@ -14,6 +14,41 @@ const TX_FILTERS = [
   { id: 'earn',        label: 'Earn' },
 ]
 
+const PAYMENT_ITEMS = [
+  {
+    title: 'Kartu Kredit Cobranding',
+    desc: 'Kartu kredit dengan cashback ke saldo investasi',
+    color: 'from-gray-100 to-gray-200',
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/>
+      </svg>
+    ),
+  },
+  {
+    title: 'Collateral Kartu Kredit',
+    desc: 'Gunakan aset sebagai kolateral untuk limit kartu kredit',
+    color: 'from-blue-50 to-blue-100',
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/>
+        <circle cx="18" cy="16" r="1.5" fill="#2563EB"/>
+      </svg>
+    ),
+  },
+  {
+    title: 'Collateral Kartu Debit',
+    desc: 'Gunakan aset sebagai kolateral untuk kartu debit',
+    color: 'from-green-50 to-green-100',
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16A34A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/>
+        <line x1="5" y1="15" x2="9" y2="15"/>
+      </svg>
+    ),
+  },
+]
+
 const CRYPTO_BADGE = {
   BTC:  { bg: '#F7931A', label: '₿' },
   ETH:  { bg: '#627EEA', label: 'Ξ' },
@@ -44,7 +79,40 @@ export default function WalletPage() {
 
       {/* ── Balance Hero ── */}
       <div className="bg-white px-4 pt-3 pb-4">
-        <h1 className="text-xl font-extrabold text-gray-900 mb-3">Wallet</h1>
+        {activeTab === 'dompet' ? (
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => navigate(-1)}
+                className="w-11 h-11 flex items-center justify-center rounded-full bg-gray-100 active:bg-gray-200 -ml-1"
+                aria-label="Kembali"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" strokeWidth="2.5" strokeLinecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+              </button>
+              <h1 className="text-xl font-extrabold text-gray-900">Wallet</h1>
+            </div>
+            <button
+              onClick={() => setActiveTab('riwayat')}
+              className="w-11 h-11 flex items-center justify-center rounded-full bg-gray-100 active:bg-gray-200"
+              aria-label="Riwayat"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#374151" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-3 mb-3">
+            <button
+              onClick={() => setActiveTab('dompet')}
+              className="w-11 h-11 flex items-center justify-center rounded-full bg-gray-100 active:bg-gray-200 -ml-1"
+              aria-label="Kembali"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" strokeWidth="2.5" strokeLinecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <h1 className="text-xl font-extrabold text-gray-900">Riwayat</h1>
+          </div>
+        )}
         <div className="bg-surface-dark rounded-card p-5 text-white">
           <p className="text-xs text-gray-400 mb-1">Total Saldo</p>
           <h2 className="text-3xl font-extrabold tracking-tight tabular-nums">{formatIDR(grandTotal)}</h2>
@@ -70,34 +138,15 @@ export default function WalletPage() {
         </div>
       </div>
 
-      {/* ── Tab Bar ── */}
-      <div className="bg-white border-b border-gray-100 sticky top-0 z-10">
-        <div className="flex px-4">
-          {['dompet', 'riwayat'].map(tab => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`flex-1 py-3 text-sm font-bold transition-colors relative ${
-                activeTab === tab ? 'text-gray-900' : 'text-gray-400'
-              }`}
-            >
-              {tab === 'dompet' ? 'Dompet' : 'Riwayat'}
-              {activeTab === tab && (
-                <span className="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-surface-dark rounded-t-full" />
-              )}
-            </button>
-          ))}
-        </div>
-      </div>
 
       {/* ── Tab: Dompet ── */}
       {activeTab === 'dompet' && (
-        <div className="pb-8">
+        <div className="pb-20">
 
           {/* Sub-tab pills */}
           <div className="bg-white px-4 pt-3 pb-3 border-b border-gray-50">
             <div className="flex gap-2">
-              {[{ id: 'fiat', label: 'Fiat' }, { id: 'crypto', label: 'Crypto' }].map(t => (
+              {[{ id: 'fiat', label: 'Fiat' }, { id: 'crypto', label: 'Crypto' }, { id: 'payment', label: 'Payment' }].map(t => (
                 <button
                   key={t.id}
                   onClick={() => setDompetSubTab(t.id)}
@@ -161,12 +210,33 @@ export default function WalletPage() {
               </div>
             </div>
           )}
+
+          {/* Payment */}
+          {dompetSubTab === 'payment' && (
+            <div className="px-4 mt-2 space-y-2 pb-4">
+              {PAYMENT_ITEMS.map(item => (
+                <div
+                  key={item.title}
+                  className="bg-white rounded-2xl p-4 flex items-center gap-3 opacity-70"
+                >
+                  <div className={`w-11 h-11 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center shrink-0`}>
+                    {item.icon}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold text-gray-900">{item.title}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">{item.desc}</p>
+                  </div>
+                  <span className="text-[10px] font-bold bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full whitespace-nowrap">Segera Hadir</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
       {/* ── Tab: Riwayat ── */}
       {activeTab === 'riwayat' && (
-        <div className="pb-8">
+        <div className="pb-20">
           {/* Filter chips */}
           <div className="bg-white px-4 pt-3 pb-3 border-b border-gray-50">
             <div className="flex gap-2 overflow-x-auto scrollbar-hide">
